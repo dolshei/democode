@@ -1,4 +1,4 @@
-package com.example.democode.domain.sample.simple;
+package com.example.democode.domain.sample.simple.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

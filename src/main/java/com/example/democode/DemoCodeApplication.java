@@ -3,11 +3,11 @@ package com.example.democode;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
-public class DemocodeApplication {
 
+@SpringBootApplication
+public class DemoCodeApplication {
     public static void main(String[] args) {
-        SpringApplication.run(DemocodeApplication.class, args);
+        SpringApplication.run(DemoCodeApplication.class, args);
     }
 
 }
