@@ -5,3 +5,11 @@ logging:
   level:
     org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
 
+# DataBase 연결 정보
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    jdbc-url=jdbc: mariadb://localhost:3306/thisisjava?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
+    username: root
+    password: 6h5g4f#D@S!A
+
