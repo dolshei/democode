@@ -39,6 +39,9 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools:3.3.2'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.2'
+    // https://mvnrepository.com/artifact/com.h2database/h2
+    testImplementation 'com.h2database:h2:2.3.230'
+
 }
 
 tasks.named('test') {
