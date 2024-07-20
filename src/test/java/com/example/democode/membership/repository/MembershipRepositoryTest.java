@@ -11,9 +11,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 public class MembershipRepositoryTest {
+
     @Autowired
     private MembershipRepository membershipRepository;
-    
+
     @DisplayName("MembershipRepository 가 Null 이 아님")
     @Test
     public void MembershipRepositoryIsNotNull() {
