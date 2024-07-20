@@ -21,7 +21,7 @@ public class MembershipServiceTest {
 
     // MembershipService는 테스트 대상이므로 의존성이 주입되는 어노테이션인 @InjectMocks를 붙여주었고
     @InjectMocks
-    private MembershipService target;
+    private MembershipService membershipService;
 
     // MembershipRepository가 의존성이 있는 클래스이므로 가짜 객체 생성을 도와주는 @Mock를 붙여주었다.
     @Mock
@@ -38,7 +38,7 @@ public class MembershipServiceTest {
         doReturn(Membership.builder().build()).when(membershipRepository).findByUserIdAndMembershipType(userId, membershipType);
 
         // when (실행) : 어떠한 함수를 실행하면
-        final MembershipException result = assertThrows(MembershipException.class, () -> target.addMembership(userId, membershipType, point));
+        final MembershipException result = assertThrows(MembershipException.class, () -> membershipService.addMembership(userId, membershipType, point));
 
         // then (검증) : 어떠한 결과가 나와야 한다.
         assertThat(result.getErrorResult()).isEqualTo(MembershipErrorResult.DUPLICATED_MEMBERSHIP_REGISTER);
