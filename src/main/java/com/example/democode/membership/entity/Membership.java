@@ -23,8 +23,8 @@ public class Membership {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(nullable = false, length = 20)
-    private String membershipName;
+    @Enumerated(EnumType.STRING)
+    private MembershipType membershipType;
 
     @Column(nullable = false)
     private String userId;
