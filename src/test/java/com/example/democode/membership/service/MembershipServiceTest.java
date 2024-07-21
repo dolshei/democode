@@ -1,5 +1,6 @@
 package com.example.democode.membership.service;
 
+import com.example.democode.membership.dto.MembershipResponse;
 import com.example.democode.membership.entity.Membership;
 import com.example.democode.membership.entity.MembershipErrorResult;
 import com.example.democode.membership.entity.MembershipType;
@@ -53,7 +54,7 @@ public class MembershipServiceTest {
         doReturn(membership()).when(membershipRepository).save(any(Membership.class));
 
         // when (실행) : 어떠한 함수를 실행하면
-        final Membership result = membershipService.addMembership(userId, membershipType, point);
+        final MembershipResponse result = membershipService.addMembership(userId, membershipType, point);
 
         // then (검증) : 어떠한 결과가 나와야 한다.
         assertThat(result.getId()).isNotNull();
