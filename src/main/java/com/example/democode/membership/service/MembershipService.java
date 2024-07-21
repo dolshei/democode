@@ -12,6 +12,10 @@ public class MembershipService {
 
     private MembershipRepository membershipRepository;
 
+    public MembershipService(MembershipRepository membershipRepository) {
+        this.membershipRepository = membershipRepository;
+    }
+
     public Membership addMembership(final String userId, final MembershipType membershipType, final Integer point) {
         final Membership result = membershipRepository.findByUserIdAndMembershipType(userId, membershipType);
         if (result != null) {

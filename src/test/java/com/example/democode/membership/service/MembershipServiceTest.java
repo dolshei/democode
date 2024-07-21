@@ -1,6 +1,5 @@
 package com.example.democode.membership.service;
 
-import com.example.democode.domain.sample.simple.array.Member;
 import com.example.democode.membership.entity.Membership;
 import com.example.democode.membership.entity.MembershipErrorResult;
 import com.example.democode.membership.entity.MembershipType;
