@@ -1,5 +1,6 @@
 package com.example.democode.membership.service;
 
+import com.example.democode.domain.sample.simple.array.Member;
 import com.example.democode.membership.entity.Membership;
 import com.example.democode.membership.entity.MembershipErrorResult;
 import com.example.democode.membership.entity.MembershipType;
@@ -14,7 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MembershipServiceTest {
@@ -42,6 +44,33 @@ public class MembershipServiceTest {
 
         // then (검증) : 어떠한 결과가 나와야 한다.
         assertThat(result.getErrorResult()).isEqualTo(MembershipErrorResult.DUPLICATED_MEMBERSHIP_REGISTER);
+    }
 
+    @DisplayName("멤버쉽등록성공")
+    @Test
+    public void MembershipRegistrationSuccessfulTest() {
+        // given (준비) : 어떠한 데이터가 준비되었을 때
+        doReturn(null).when(membershipRepository).findByUserIdAndMembershipType(userId, membershipType);
+        doReturn(membership()).when(membershipRepository).save(any(Membership.class));
+
+        // when (실행) : 어떠한 함수를 실행하면
+        final Membership result = membershipService.addMembership(userId, membershipType, point);
+
+        // then (검증) : 어떠한 결과가 나와야 한다.
+        assertThat(result.getId()).isNotNull();
+        assertThat(result.getMembershipType()).isEqualTo(MembershipType.NAVER);
+
+        // verify
+        verify(membershipRepository, times(1)).findByUserIdAndMembershipType(userId, membershipType);
+        verify(membershipRepository, times(1)).save(any(Membership.class));
+    }
+
+    private Membership membership() {
+        return Membership.builder()
+                .id(-1L)
+                .userId(userId)
+                .point(point)
+                .membershipType(MembershipType.NAVER)
+                .build();
     }
 }
