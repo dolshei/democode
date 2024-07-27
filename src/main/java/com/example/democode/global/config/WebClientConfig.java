@@ -1,4 +1,4 @@
-package com.example.democode.global.conig;
+package com.example.democode.global.config;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
