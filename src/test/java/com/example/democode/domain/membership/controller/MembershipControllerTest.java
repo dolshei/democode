@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.example.democode.domain.membership.model.MembershipConstants.USER_ID_HEADER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,7 +43,7 @@ public class MembershipControllerTest {
 
     @DisplayName("멤버쉽등록실패_사용자식별값이헤더에없음")
     @Test
-    public void UserIdentificationValueIsNotInHeaderTest() throws Exception {
+    public void userIdentificationValueIsNotInHeaderTest() throws Exception {
         // given (준비) : 어떠한 데이터가 준비되었을 때
         final String url = "/api/v1/memberships";
 
@@ -63,5 +64,59 @@ public class MembershipControllerTest {
                 .point(point)
                 .membershipType(membershipType)
                 .build();
+    }
+
+    @Test
+    @DisplayName("멤버쉽등록실패_포인트가_NULL")
+    public void membershipRegistrationFailedPointsNULLTest() throws Exception {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final String url = "/api/v1/memberships";
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.post(url)
+                        .header(USER_ID_HEADER, "12345")
+                        .content(gson.toJson(membershipRequest(null, MembershipType.NAVER)))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        resultActions.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("멤버쉽등록실패_포인트가음수")
+    public void membershipRegistrationFailurePointFalseNegativeTest() throws Exception {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final String url = "/api/v1/memberships";
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.post(url)
+                        .header(USER_ID_HEADER, "12345")
+                        .content(gson.toJson(membershipRequest(-1, MembershipType.NAVER)))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        resultActions.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("멤버쉽등록실패_멤버쉽종류가_NULL")
+    public void membershipRegistrationFailedMembershipTypeNullTest() throws Exception {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final String url = "/api/v1/memberships";
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.post(url)
+                        .header(USER_ID_HEADER, "12345")
+                        .content(gson.toJson(membershipRequest(10000, null)))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        resultActions.andExpect(status().isBadRequest());
     }
 }

@@ -3,6 +3,7 @@ package com.example.democode.domain.membership.controller;
 import com.example.democode.domain.membership.dto.MembershipRequest;
 import com.example.democode.domain.membership.dto.MembershipResponse;
 import com.example.democode.domain.membership.entity.Membership;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ public class MembershipController {
     @PostMapping("/api/v1/memberships")
     public ResponseEntity<MembershipResponse> addMembership(
             @RequestHeader(USER_ID_HEADER) final String userId,
-            @RequestBody final MembershipRequest membershipRequest) {
+            @RequestBody @Valid final MembershipRequest membershipRequest) {
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
