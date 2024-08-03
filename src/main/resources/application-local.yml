@@ -7,8 +7,6 @@ logging:
 
 # DataBase 연결 정보
 spring:
-  profiles:
-    active: local
   datasource:
 #   H2 일 경우
     driver-class-name: org.h2.Driver
