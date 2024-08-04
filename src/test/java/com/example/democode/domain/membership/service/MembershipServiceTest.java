@@ -1,6 +1,7 @@
 package com.example.democode.domain.membership.service;
 
-import com.example.democode.domain.membership.dto.MembershipResponse;
+import com.example.democode.domain.membership.dto.MembershipAddResponse;
+import com.example.democode.domain.membership.dto.MembershipDetailResponse;
 import com.example.democode.domain.membership.entity.Membership;
 import com.example.democode.domain.membership.model.MembershipErrorResult;
 import com.example.democode.domain.membership.model.MembershipType;
@@ -12,6 +13,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -54,7 +58,7 @@ public class MembershipServiceTest {
         doReturn(membership()).when(membershipRepository).save(any(Membership.class));
 
         // when (실행) : 어떠한 함수를 실행하면
-        final MembershipResponse result = membershipService.addMembership(userId, membershipType, point);
+        final MembershipAddResponse result = membershipService.addMembership(userId, membershipType, point);
 
         // then (검증) : 어떠한 결과가 나와야 한다.
         assertThat(result.getId()).isNotNull();
@@ -72,5 +76,23 @@ public class MembershipServiceTest {
                 .point(point)
                 .membershipType(MembershipType.NAVER)
                 .build();
+    }
+
+    @DisplayName("멤버쉽목록조회")
+    @Test
+    public void MembershipListCheckTest() {
+        // given (준비) : 어떠한 데이터가 준비되었을 때
+        doReturn(Arrays.asList(
+                Membership.builder().build(),
+                Membership.builder().build(),
+                Membership.builder().build()
+        )).when(membershipRepository).findAllByUserId(userId);
+
+        // when (실행) : 어떠한 함수를 실행하면
+        final List<MembershipDetailResponse> result = membershipService.getMembershipList(userId);
+
+        // then (검증) : 어떠한 결과가 나와야 한다.
+        assertThat(result.size()).isEqualTo(3);
+
     }
 }
