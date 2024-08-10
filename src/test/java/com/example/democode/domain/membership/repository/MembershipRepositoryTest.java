@@ -1,11 +1,14 @@
 package com.example.democode.domain.membership.repository;
 
+import com.example.democode.domain.membership.dto.MembershipDetailResponse;
 import com.example.democode.domain.membership.entity.Membership;
 import com.example.democode.domain.membership.model.MembershipType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -61,5 +64,45 @@ public class MembershipRepositoryTest {
         assertThat(findMembership.getUserId()).isEqualTo("userId");
         assertThat(findMembership.getMembershipType()).isEqualTo(MembershipType.NAVER);
         assertThat(findMembership.getPoint()).isEqualTo(10000);
+    }
+
+    @DisplayName("멤버쉽조회_사이즈가0")
+    @Test
+    public void MembershipSearchSizeZeroTest() {
+        // given (준비) : 어떠한 데이터가 준비되었을 때
+
+        // when (실행) : 어떠한 함수를 실행하면
+        List<MembershipDetailResponse> result = membershipRepository.findAllByUserId("userId");
+
+        // then (검증) : 어떠한 결과가 나와야 한다.
+        assertThat(result.size()).isEqualTo(0);
+
+    }
+
+    @DisplayName("멤버쉽조회_사이즈가2")
+    @Test
+    public void MembershipSearchSizeTwoTest() {
+        // given (준비) : 어떠한 데이터가 준비되었을 때
+        final Membership naverMembership = Membership.builder()
+                .userId("userId")
+                .membershipType(MembershipType.NAVER)
+                .point(10000)
+                .build();
+
+        final Membership kakaoMembership = Membership.builder()
+                .userId("userId")
+                .membershipType(MembershipType.KAKAO)
+                .point(10000)
+                .build();
+
+        membershipRepository.save(naverMembership);
+        membershipRepository.save(kakaoMembership);
+
+        // when (실행) : 어떠한 함수를 실행하면
+        List<MembershipDetailResponse> result = membershipRepository.findAllByUserId("userId");
+
+        // then (검증) : 어떠한 결과가 나와야 한다.
+        assertThat(result.size()).isEqualTo(2);
+
     }
 }
