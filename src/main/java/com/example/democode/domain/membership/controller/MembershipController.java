@@ -1,7 +1,7 @@
 package com.example.democode.domain.membership.controller;
 
+import com.example.democode.domain.membership.dto.MembershipAddResponse;
 import com.example.democode.domain.membership.dto.MembershipRequest;
-import com.example.democode.domain.membership.dto.MembershipResponse;
 import com.example.democode.domain.membership.service.MembershipService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +21,11 @@ public class MembershipController {
     private final MembershipService membershipService;
 
     @PostMapping("/api/v1/memberships")
-    public ResponseEntity<MembershipResponse> addMembership(
+    public ResponseEntity<MembershipAddResponse> addMembership(
             @RequestHeader(USER_ID_HEADER) final String userId,
             @RequestBody @Valid final MembershipRequest membershipRequest) {
 
-        final MembershipResponse membershipResponse =
+        final MembershipAddResponse membershipResponse =
                 membershipService.addMembership(userId, membershipRequest.getMembershipType(), membershipRequest.getPoint());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(membershipResponse);

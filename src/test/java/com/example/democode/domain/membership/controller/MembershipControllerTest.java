@@ -1,7 +1,7 @@
 package com.example.democode.domain.membership.controller;
 
+import com.example.democode.domain.membership.dto.MembershipAddResponse;
 import com.example.democode.domain.membership.dto.MembershipRequest;
-import com.example.democode.domain.membership.dto.MembershipResponse;
 import com.example.democode.domain.membership.exception.GlobalExceptionHandler;
 import com.example.democode.domain.membership.exception.MembershipException;
 import com.example.democode.domain.membership.model.MembershipErrorResult;
@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
@@ -198,7 +197,7 @@ public class MembershipControllerTest {
     public void membershipRegistrationSuccessfulTest() throws Exception {
         // given(준비) : 어떠한 데이터가 준비 되었을 때
         final String url = "/api/v1/memberships";
-        final MembershipResponse membershipResponse = MembershipResponse.builder()
+        final MembershipAddResponse membershipResponse = MembershipAddResponse.builder()
                 .id(-1L)
                 .membershipType(MembershipType.NAVER)
                 .build();
@@ -216,9 +215,9 @@ public class MembershipControllerTest {
         // then(검증) : 어떠한 결과가 나와야 한다.
         resultActions.andExpect(status().isCreated());
 
-        final MembershipResponse response = gson.fromJson(resultActions.andReturn()
+        final MembershipAddResponse response = gson.fromJson(resultActions.andReturn()
                 .getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), MembershipResponse.class);
+                .getContentAsString(StandardCharsets.UTF_8), MembershipAddResponse.class);
 
         assertThat(response.getMembershipType()).isEqualTo(MembershipType.NAVER);
         assertThat(response.getId()).isNotNull();
