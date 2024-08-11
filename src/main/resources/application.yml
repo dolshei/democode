@@ -13,13 +13,13 @@ spring:
 #   H2 일 경우
     driver-class-name: org.h2.Driver
 #    Windows 환경 셋팅
-    url: jdbc:h2:tcp://localhost/~/test
-    username: sa
+#    url: jdbc:h2:tcp://localhost/~/test
+#    username: sa
 
 #    Mac 환경 셋팅
-#    url: jdbc:h2:tcp://localhost/~/data/H2/test
-#    username: sa
-#    password: 12345
+    url: jdbc:h2:tcp://localhost/~/data/H2/test
+    username: sa
+    password: 12345
 
 #    MySQL 일 경우 com.mysql.cj.jdbc.Driver
 #    driver-class-name: org.mariadb.jdbc.Driver
