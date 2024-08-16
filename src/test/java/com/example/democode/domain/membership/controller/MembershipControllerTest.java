@@ -9,6 +9,7 @@ import com.example.democode.domain.membership.model.MembershipType;
 import com.example.democode.domain.membership.service.MembershipService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,7 +56,7 @@ public class MembershipControllerTest {
 
     @DisplayName("mockMvc 가 Null 이 아님")
     @Test
-    public void mockMvcIsNotNullTest() throws Exception {
+    public void mockMvcIsNotNullTest() {
         assertThat(membershipController).isNotNull();
         assertThat(mockMvc).isNotNull();
     }
@@ -85,9 +86,10 @@ public class MembershipControllerTest {
                 .build();
     }
 
-    /*
+
     // 멤버쉽 등록 실패 3가지 테스트 코드 리팩토링
     // 멤버쉽등록실패_잘못된파라미터 로 3가지 케이스를 1개의 테스트로 만들고 파라미터만 다르게 하여 중복을 제거
+    @Disabled
     @Test
     @DisplayName("멤버쉽등록실패_포인트가_NULL")
     public void membershipRegistrationFailedPointsNULLTest() throws Exception {
@@ -106,6 +108,7 @@ public class MembershipControllerTest {
         resultActions.andExpect(status().isBadRequest());
     }
 
+    @Disabled
     @Test
     @DisplayName("멤버쉽등록실패_포인트가음수")
     public void membershipRegistrationFailurePointFalseNegativeTest() throws Exception {
@@ -124,6 +127,7 @@ public class MembershipControllerTest {
         resultActions.andExpect(status().isBadRequest());
     }
 
+    @Disabled
     @Test
     @DisplayName("멤버쉽등록실패_멤버쉽종류가_NULL")
     public void membershipRegistrationFailedMembershipTypeNullTest() throws Exception {
@@ -141,7 +145,6 @@ public class MembershipControllerTest {
         // then(검증) : 어떠한 결과가 나와야 한다.
         resultActions.andExpect(status().isBadRequest());
     }
-    */
 
     @ParameterizedTest
     @MethodSource("invalidMembershipAddParameter")
