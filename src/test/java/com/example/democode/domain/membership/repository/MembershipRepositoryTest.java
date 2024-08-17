@@ -72,7 +72,7 @@ public class MembershipRepositoryTest {
         // given (준비) : 어떠한 데이터가 준비되었을 때
 
         // when (실행) : 어떠한 함수를 실행하면
-        List<MembershipDetailResponse> result = membershipRepository.findAllByUserId("userId");
+        List<Membership> result = membershipRepository.findAllByUserId("userId");
 
         // then (검증) : 어떠한 결과가 나와야 한다.
         assertThat(result.size()).isEqualTo(0);
@@ -99,7 +99,7 @@ public class MembershipRepositoryTest {
         membershipRepository.save(kakaoMembership);
 
         // when (실행) : 어떠한 함수를 실행하면
-        List<MembershipDetailResponse> result = membershipRepository.findAllByUserId("userId");
+        List<Membership> result = membershipRepository.findAllByUserId("userId");
 
         // then (검증) : 어떠한 결과가 나와야 한다.
         assertThat(result.size()).isEqualTo(2);

@@ -3,6 +3,7 @@ package com.example.democode.domain.membership.controller;
 import com.example.democode.domain.membership.dto.MembershipAddResponse;
 import com.example.democode.domain.membership.dto.MembershipDetailResponse;
 import com.example.democode.domain.membership.dto.MembershipRequest;
+import com.example.democode.domain.membership.entity.Membership;
 import com.example.democode.domain.membership.service.MembershipService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class MembershipController {
     }
 
     @GetMapping("/api/v1/memberships")
-    public ResponseEntity<List<MembershipDetailResponse>> getMemberships(@RequestHeader(USER_ID_HEADER) final String userId) {
+    public ResponseEntity<List<Membership>> getMemberships(@RequestHeader(USER_ID_HEADER) final String userId) {
         return ResponseEntity.ok(membershipService.getMembershipList(userId));
     }
 }
