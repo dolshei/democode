@@ -20,6 +20,7 @@ public class MembershipService {
 
     private final MembershipRepository membershipRepository;
 
+//    @RequiredArgsConstructor 추가로 생성자 주입을 위한 아래 코드 주석 처리
 //    public MembershipService(MembershipRepository membershipRepository) {
 //        this.membershipRepository = membershipRepository;
 //    }
