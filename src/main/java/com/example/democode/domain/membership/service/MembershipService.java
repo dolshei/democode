@@ -42,16 +42,16 @@ public class MembershipService {
     }
 
     public List<MembershipDetailResponse> getMembershipList(String userId) {
-//        final List<Membership> membershipList = membershipRepository.findAllByUserId(userId);
-//        return membershipList.stream()
-//                .map(v -> MembershipDetailResponse.builder()
-//                        .id(v.getId())
-//                        .membershipType(v.getMembershipType())
-//                        .point(v.getPoint())
-//                        .createdAt(v.getCreatedAt())
-//                        .build()
-//                ).collect(Collectors.toList());
-        return membershipRepository.findAllByUserId(userId);
+
+        final List<MembershipDetailResponse> membershipList = membershipRepository.findAllByUserId(userId);
+        return membershipList.stream()
+                .map(v -> MembershipDetailResponse.builder()
+                        .id(v.getId())
+                        .membershipType(v.getMembershipType())
+                        .point(v.getPoint())
+                        .createdAt(v.getCreatedAt())
+                        .build()
+                ).collect(Collectors.toList());
     }
 
 }
