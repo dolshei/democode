@@ -1,6 +1,7 @@
 package com.example.democode.domain.membership.controller;
 
 import com.example.democode.domain.membership.dto.MembershipAddResponse;
+import com.example.democode.domain.membership.dto.MembershipDetailResponse;
 import com.example.democode.domain.membership.dto.MembershipRequest;
 import com.example.democode.domain.membership.exception.GlobalExceptionHandler;
 import com.example.democode.domain.membership.exception.MembershipException;
@@ -26,6 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static com.example.democode.domain.membership.model.MembershipConstants.USER_ID_HEADER;
@@ -224,5 +226,41 @@ public class MembershipControllerTest {
 
         assertThat(response.getMembershipType()).isEqualTo(MembershipType.NAVER);
         assertThat(response.getId()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("멤버쉽목록_조회실패_사용자식별값이_헤더에_없음")
+    public void MembershipListSearchFailedUserIdentificationValueIsNotInHeaderTest() throws Exception {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final String url = "/api/v1/memberships";
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get(url)
+        );
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        resultActions.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("멤버쉽목록_조회성공")
+    public void MembershipListSearchSuccessTest() throws Exception {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final String url = "/api/v1/memberships";
+        doReturn(Arrays.asList(
+                MembershipDetailResponse.builder().build(),
+                MembershipDetailResponse.builder().build(),
+                MembershipDetailResponse.builder().build()
+        )).when(membershipService).getMembershipList("12345");
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get(url).header(USER_ID_HEADER, "12345")
+        );
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        resultActions.andExpect(status().isOk());
+
     }
 }
