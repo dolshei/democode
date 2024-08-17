@@ -263,4 +263,57 @@ public class MembershipControllerTest {
         resultActions.andExpect(status().isOk());
 
     }
+
+    @Test
+    @DisplayName("멤버쉽상세조회실패_사용자식별값이_헤더에없음")
+    public void MembershipDetailsInquiryFailedUserIdentificationValueIsNotInHeaderTest() throws Exception {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final String url = "/api/v1/memberships";
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get(url)
+        );
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        resultActions.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("멤버쉽상세조회실패_멤버쉽이존재하지않음")
+    public void MembershipDetailsInquiryFailedMembershipDoesNotExistTest() throws Exception {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final String url = "/api/v1/memberships/-1";
+        doThrow(new MembershipException(MembershipErrorResult.MEMBERSHIP_NOT_FOUND))
+                .when(membershipService)
+                .getMembership(-1L, "12345");
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get(url).header(USER_ID_HEADER, "12345")
+        );
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        resultActions.andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("멤버쉽상세조회성공")
+    public void MembershipDetailsInquirySuccessfulTest() throws Exception {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final String url = "/api/v1/memberships/-1";
+        doReturn(MembershipDetailResponse.builder().build())
+                .when(membershipService)
+                .getMembership(-1L, "12345");
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get(url)
+                        .header(USER_ID_HEADER, "12345")
+                        .param("membershipType", MembershipType.NAVER.name())
+        );
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        resultActions.andExpect(status().isOk());
+    }
 }
