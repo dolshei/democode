@@ -1,6 +1,7 @@
 package com.example.democode.domain.membership.service;
 
 import com.example.democode.domain.membership.dto.MembershipAddResponse;
+import com.example.democode.domain.membership.dto.MembershipDetailResponse;
 import com.example.democode.domain.membership.entity.Membership;
 import com.example.democode.domain.membership.exception.MembershipException;
 import com.example.democode.domain.membership.model.MembershipErrorResult;
@@ -36,7 +37,7 @@ public class MembershipServiceTest {
     @Mock
     private MembershipRepository membershipRepository;
 
-    private Long membershipId = 1L;
+    private final Long membershipId = 1L;
     private final String userId = "userId";
     private final MembershipType membershipType = MembershipType.NAVER;
     private final Integer point = 10000;
@@ -113,5 +114,32 @@ public class MembershipServiceTest {
         // then(검증) : 어떠한 결과가 나와야 한다.
         assertThat(result.getErrorResult()).isEqualTo(MembershipErrorResult.MEMBERSHIP_NOT_FOUND);
 
+    }
+
+    @Test
+    @DisplayName("멤버쉽상세조회실패_본인이아님")
+    public void MembershipDetailsInquiryFailedNotYouTest() {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        doReturn(Optional.empty()).when(membershipRepository).findById(membershipId);
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final MembershipException result = assertThrows(MembershipException.class, () -> membershipService.getMembership(membershipId, "notowner"));
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        assertThat(result.getErrorResult()).isEqualTo(MembershipErrorResult.MEMBERSHIP_NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("멤버쉽상세조회성공")
+    public void MembershipDetailsInquirySuccessfulTest() {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        doReturn(Optional.of(membership())).when(membershipRepository).findById(membershipId);
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final MembershipDetailResponse result = membershipService.getMembership(membershipId, userId);
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        assertThat(result.getMembershipType()).isEqualTo(MembershipType.NAVER);
+        assertThat(result.getPoint()).isEqualTo(point);
     }
 }
