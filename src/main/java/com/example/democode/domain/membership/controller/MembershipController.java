@@ -6,7 +6,6 @@ import com.example.democode.domain.membership.dto.MembershipRequest;
 import com.example.democode.domain.membership.entity.Membership;
 import com.example.democode.domain.membership.model.ValidationGroups;
 import com.example.democode.domain.membership.service.MembershipService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
