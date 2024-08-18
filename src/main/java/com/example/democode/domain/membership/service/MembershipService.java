@@ -3,15 +3,14 @@ package com.example.democode.domain.membership.service;
 import com.example.democode.domain.membership.dto.MembershipAddResponse;
 import com.example.democode.domain.membership.dto.MembershipDetailResponse;
 import com.example.democode.domain.membership.entity.Membership;
+import com.example.democode.domain.membership.exception.MembershipException;
 import com.example.democode.domain.membership.model.MembershipErrorResult;
 import com.example.democode.domain.membership.model.MembershipType;
-import com.example.democode.domain.membership.exception.MembershipException;
 import com.example.democode.domain.membership.repository.MembershipRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
