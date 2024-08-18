@@ -25,6 +25,13 @@ public class MembershipService {
 //        this.membershipRepository = membershipRepository;
 //    }
 
+    /**
+     * 멤버쉽 추가
+     * @param userId 사용자 ID
+     * @param membershipType 멤버쉽 타입
+     * @param point 포인트
+     * @return 결과값
+     */
     public MembershipAddResponse addMembership(final String userId, final MembershipType membershipType, final Integer point) {
         final Membership result = membershipRepository.findByUserIdAndMembershipType(userId, membershipType);
         if (result != null) {
@@ -45,6 +52,11 @@ public class MembershipService {
                 .build();
     }
 
+    /**
+     * 멤버쉽 목록 가져오기
+     * @param userId 사용자 ID
+     * @return 결과값
+     */
     public List<Membership> getMembershipList(String userId) {
 
         final List<Membership> membershipList = membershipRepository.findAllByUserId(userId);
@@ -58,6 +70,12 @@ public class MembershipService {
                 ).collect(Collectors.toList());
     }
 
+    /**
+     * 멤버쉽 상세 정보
+     * @param membershipId 멤버쉽 고유번호
+     * @param userId 사용자 ID
+     * @return 상세 정보
+     */
     public MembershipDetailResponse getMembership(final Long membershipId, final String userId) {
         final Optional<Membership> optionalMembership = membershipRepository.findById(membershipId);
         final Membership membership = optionalMembership.orElseThrow(() -> new MembershipException(MembershipErrorResult.MEMBERSHIP_NOT_FOUND));
@@ -74,4 +92,19 @@ public class MembershipService {
                 .build();
     }
 
+    /**
+     * 멤버쉽 삭제
+     * @param membershipId 멤버쉽 고유번호
+     * @param userId 사용자 ID
+     */
+    public void removeMembership(Long membershipId, String userId) {
+        final Optional<Membership> optionalMembership = membershipRepository.findById(membershipId);
+        final Membership membership = optionalMembership.orElseThrow(() -> new MembershipException(MembershipErrorResult.MEMBERSHIP_NOT_FOUND));
+
+        if (!membership.getUserId().equals(userId)) {
+            throw new MembershipException(MembershipErrorResult.NOT_MEMBERSHIP_OWNER);
+        }
+
+        membershipRepository.deleteById(membershipId);
+    }
 }
