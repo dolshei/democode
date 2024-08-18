@@ -37,7 +37,7 @@ public class MembershipServiceTest {
     @Mock
     private MembershipRepository membershipRepository;
 
-    private final Long membershipId = 1L;
+    private final Long membershipId = -1L;
     private final String userId = "userId";
     private final MembershipType membershipType = MembershipType.NAVER;
     private final Integer point = 10000;
@@ -141,5 +141,46 @@ public class MembershipServiceTest {
         // then(검증) : 어떠한 결과가 나와야 한다.
         assertThat(result.getMembershipType()).isEqualTo(MembershipType.NAVER);
         assertThat(result.getPoint()).isEqualTo(point);
+    }
+
+    @Test
+    @DisplayName("멤버쉽삭제실패_존재하지않음")
+    public void MembershipDeletionFailedDoesNotExistTest() {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        doReturn(Optional.empty()).when(membershipRepository).findById(membershipId);
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final MembershipException result = assertThrows(MembershipException.class, () -> membershipService.removeMembership(membershipId, userId));
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        assertThat(result.getErrorResult()).isEqualTo(MembershipErrorResult.MEMBERSHIP_NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("멤버쉽삭제실패_본인이아님")
+    public void MembershipDeletionFailedNotYouTest() {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final Membership membership = membership();
+        doReturn(Optional.of(membership)).when(membershipRepository).findById(membershipId);
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final MembershipException result = assertThrows(MembershipException.class, () -> membershipService.removeMembership(membershipId, "notowner"));
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        assertThat(result.getErrorResult()).isEqualTo(MembershipErrorResult.NOT_MEMBERSHIP_OWNER);
+    }
+
+    @Test
+    @DisplayName("멤버쉽삭제성공")
+    public void MembershipDeletionSuccessfulTest() {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final Membership membership = membership();
+        doReturn(Optional.of(membership)).when(membershipRepository).findById(membershipId);
+
+        // when(실행) : 어떠한 함수를 실행하면
+        membershipService.removeMembership(membershipId, userId);
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+
     }
 }
