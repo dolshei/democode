@@ -347,4 +347,21 @@ public class MembershipControllerTest {
         // then(검증) : 어떠한 결과가 나와야 한다.
         resultActions.andExpect(status().isNoContent());
     }
+
+    @Test
+    @DisplayName("멤버쉽적립실패_사용자식별값이헤더에없음")
+    public void MembershipAccumulationFailed_UserIdentificationValueNotInHeaderTest() throws Exception {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final String url = "/api/v1/memberships/-1/accumulate";
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.post(url)
+                        .content(gson.toJson(membershipRequest(10000, MembershipType.NAVER)))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        resultActions.andExpect(status().isBadRequest());
+    }
 }
