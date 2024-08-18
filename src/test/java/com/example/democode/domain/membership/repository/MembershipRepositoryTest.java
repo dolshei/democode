@@ -1,6 +1,5 @@
 package com.example.democode.domain.membership.repository;
 
-import com.example.democode.domain.membership.dto.MembershipDetailResponse;
 import com.example.democode.domain.membership.entity.Membership;
 import com.example.democode.domain.membership.model.MembershipType;
 import org.junit.jupiter.api.DisplayName;
