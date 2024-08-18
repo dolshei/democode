@@ -33,14 +33,26 @@ public class MembershipController {
     }
 
     @GetMapping("/api/v1/memberships")
-    public ResponseEntity<List<Membership>> getMemberships(@RequestHeader(USER_ID_HEADER) final String userId) {
+    public ResponseEntity<List<Membership>> getMemberships(
+            @RequestHeader(USER_ID_HEADER) final String userId
+    ) {
         return ResponseEntity.ok(membershipService.getMembershipList(userId));
     }
 
     @GetMapping("/api/v1/memberships/{id}")
     public ResponseEntity<MembershipDetailResponse> getMembership(
             @RequestHeader(USER_ID_HEADER) final String userId,
-            @PathVariable final Long id) {
+            @PathVariable final Long id
+    ) {
         return ResponseEntity.ok(membershipService.getMembership(id, userId));
+    }
+
+    @DeleteMapping("/api/v1/memberships/{id}")
+    public ResponseEntity<Void> removeMembership(
+            @RequestHeader(USER_ID_HEADER) final String userId,
+            @PathVariable final Long id
+    ) {
+        membershipService.removeMembership(id, userId);
+        return ResponseEntity.noContent().build();
     }
 }

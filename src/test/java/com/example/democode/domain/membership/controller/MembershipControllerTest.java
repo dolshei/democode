@@ -266,7 +266,7 @@ public class MembershipControllerTest {
 
     @Test
     @DisplayName("멤버쉽상세조회실패_사용자식별값이_헤더에없음")
-    public void MembershipDetailsInquiryFailedUserIdentificationValueIsNotInHeaderTest() throws Exception {
+    public void MembershipDetailsInquiryFailed_UserIdentificationValueIsNotInHeaderTest() throws Exception {
         // given(준비) : 어떠한 데이터가 준비 되었을 때
         final String url = "/api/v1/memberships";
 
@@ -281,7 +281,7 @@ public class MembershipControllerTest {
 
     @Test
     @DisplayName("멤버쉽상세조회실패_멤버쉽이존재하지않음")
-    public void MembershipDetailsInquiryFailedMembershipDoesNotExistTest() throws Exception {
+    public void MembershipDetailsInquiryFailed_MembershipDoesNotExistTest() throws Exception {
         // given(준비) : 어떠한 데이터가 준비 되었을 때
         final String url = "/api/v1/memberships/-1";
         doThrow(new MembershipException(MembershipErrorResult.MEMBERSHIP_NOT_FOUND))
@@ -315,5 +315,36 @@ public class MembershipControllerTest {
 
         // then(검증) : 어떠한 결과가 나와야 한다.
         resultActions.andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("멤버쉽삭제실패_사용자식별값이헤더에없음")
+    public void MembershipDeletionFailed_UserIdentificationValueIsNotInHeaderTest() throws Exception {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final String url = "/api/v1/memberships/-1";
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.delete(url)
+        );
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        resultActions.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("멤버쉽삭제성공")
+    public void MembershipDeletionSuccessfulTest() throws Exception {
+        // given(준비) : 어떠한 데이터가 준비 되었을 때
+        final String url = "/api/v1/memberships/-1";
+
+        // when(실행) : 어떠한 함수를 실행하면
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.delete(url)
+                        .header(USER_ID_HEADER, "12345")
+        );
+
+        // then(검증) : 어떠한 결과가 나와야 한다.
+        resultActions.andExpect(status().isNoContent());
     }
 }
